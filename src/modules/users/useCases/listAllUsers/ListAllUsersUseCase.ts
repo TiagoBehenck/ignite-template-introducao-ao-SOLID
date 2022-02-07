@@ -4,12 +4,23 @@ import { IUsersRepository } from "../../repositories/IUsersRepository";
 interface IRequest {
   user_id: string;
 }
-
 class ListAllUsersUseCase {
-  constructor(private usersRepository: IUsersRepository) {}
+  constructor(private usersRepository: IUsersRepository) { }
 
   execute({ user_id }: IRequest): User[] {
-    // Complete aqui
+    const user = this.usersRepository.findById(user_id);
+
+    if (!user) {
+      throw new Error("User doesnt exists");
+    }
+
+    const isAdmin = user.admin;
+
+    if (!isAdmin) {
+      throw new Error("User doesnt admin!");
+    }
+
+    return this.usersRepository.list();
   }
 }
 
